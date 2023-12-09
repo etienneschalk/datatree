@@ -33,6 +33,10 @@ Breaking changes
 Deprecations
 ~~~~~~~~~~~~
 
+- Renamed `DataTree.match` to `DataTree.glob` to match `pathlib` vocabulary
+  (:issue:`283`, :pull:`286`). `match` is now deprecated and use of `glob` is encouraged.
+  By `Etienne Schalk <https://github.com/etienneschalk>`_.
+
 Bug fixes
 ~~~~~~~~~
 - Keep attributes on nodes containing no data in :py:func:`map_over_subtree`. (:issue:`278`, :pull:`279`)

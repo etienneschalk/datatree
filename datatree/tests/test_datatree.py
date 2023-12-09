@@ -688,6 +688,74 @@ class TestPipe:
 
 
 class TestSubset:
+    def test_glob(self):
+        # TODO is this example going to cause problems with case sensitivity?
+
+        dt = DataTree.from_dict(
+            {
+                "/albert/A": None,
+                "/hubert/H": None,
+            }
+        )
+
+        result = dt.glob("*bert")
+        expected = DataTree.from_dict(
+            {
+                "/albert": None,
+                "/hubert": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
+        result = dt.glob("*bert*")
+        expected = DataTree.from_dict(
+            {
+                "/albert": None,
+                "/hubert": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
+        result = dt.glob("*bert/*")
+        expected = DataTree.from_dict(
+            {
+                "/albert/A": None,
+                "/hubert/H": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
+        result = dt.glob("albert")
+        expected = DataTree.from_dict(
+            {
+                "/albert": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
+        result = dt.glob("albert/*")
+        expected = DataTree.from_dict(
+            {
+                "/albert/A": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
+        result = dt.glob("hub*")
+        expected = DataTree.from_dict(
+            {
+                "/hubert": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+        result = dt.glob("hub*/H")
+        expected = DataTree.from_dict(
+            {
+                "/hubert/H": None,
+            }
+        )
+        dtt.assert_identical(result, expected)
+
     def test_match(self):
         # TODO is this example going to cause problems with case sensitivity?
         dt = DataTree.from_dict(

@@ -399,7 +399,7 @@ Subsetting Tree Nodes
 We can subset our tree to select only nodes of interest in various ways.
 
 Similarly to on a real filesystem, matching nodes by common patterns in their paths is often useful.
-We can use :py:meth:`DataTree.match` for this:
+We can use :py:meth:`DataTree.glob` for this:
 
 .. ipython:: python
 
@@ -411,7 +411,7 @@ We can use :py:meth:`DataTree.match` for this:
             "/b/B": None,
         }
     )
-    result = dt.match("*/B")
+    result = dt.glob("*/B")
 
 We can also subset trees by the contents of the nodes.
 :py:meth:`DataTree.filter` retains only the nodes of a tree that meet a certain condition.

@@ -1262,7 +1262,7 @@ class DataTree(
         }
         return DataTree.from_dict(filtered_nodes, name=self.root.name)
 
-    def match(self, pattern: str) -> DataTree:
+    def glob(self, pattern: str) -> DataTree:
         """
         Return nodes with paths matching pattern.
 
@@ -1293,13 +1293,65 @@ class DataTree(
         ...         "/b/B": None,
         ...     }
         ... )
-        >>> dt.match("*/B")
+        >>> dt.rglob("*/B")
         DataTree('None', parent=None)
         ├── DataTree('a')
         │   └── DataTree('B')
         └── DataTree('b')
             └── DataTree('B')
         """
+        matching_nodes = {
+            node.path: node.ds
+            for node in self.subtree
+            if NodePath(node.path).match(pattern)
+        }
+        return DataTree.from_dict(matching_nodes, name=self.root.name)
+
+    def match(self: Tree, pattern: str) -> DataTree:
+        """
+        Return nodes with paths matching pattern.
+
+        Uses unix glob-like syntax for pattern-matching.
+
+        Parameters
+        ----------
+        pattern: str
+            A pattern to match each node path against.
+
+        Returns
+        -------
+        DataTree
+
+        See Also
+        --------
+        filter
+        pipe
+        map_over_subtree
+
+        Examples
+        --------
+        >>> dt = DataTree.from_dict(
+        ...     {
+        ...         "/a/A": None,
+        ...         "/a/B": None,
+        ...         "/b/A": None,
+        ...         "/b/B": None,
+        ...     }
+        ... )
+        >>> dt.glob("*/B")
+        DataTree('None', parent=None)
+        ├── DataTree('a')
+        │   └── DataTree('B')
+        └── DataTree('b')
+            └── DataTree('B')
+        """
+        from warnings import warn
+
+        warn(
+            "`match` has been deprecated, and in the future will raise an error."
+            "Please use `glob` from now on.",
+            DeprecationWarning,
+        )
         matching_nodes = {
             node.path: node.ds
             for node in self.subtree
